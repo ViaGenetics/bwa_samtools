@@ -31,9 +31,33 @@ except ImportError:
     logger.error("Make sure to add the dx_applet_utilities to execDepends in dxapp.json!")
     sys.exit(1)
 
-    
+
 @dxpy.entry_point('main')
-def main(reads_1, reference, reference_index, read_group_sample, read_group_platform, read_group_platform_unit, read_group_library, advanced_bwa_options, loglevel, reads_2=None, advanced_samtools_view_options=None, advanced_samtools_sort_options=None, advanced_samtools_markdups_options=None, advanced_samtools_flagstat_options=None):
+def main(reads_1, reference, reference_index, read_group_sample, loglevel,
+    read_group_platform, read_group_platform_unit, read_group_library,
+    reads_2=None, advanced_bwa_options, advanced_samtools_view_options=None,
+    advanced_samtools_sort_options=None, advanced_samtools_markdups_options=None,
+    advanced_samtools_flagstat_options=None):
+
+    """This is a dx applet that runs on the DNAnexus platform.
+
+    :param: `reads_1`:
+    :param: `reference`:
+    :param: `reference_index`:
+    :param: `read_group_sample`:
+    :param: `read_group_platform`:
+    :param: `read_group_platform_unit`:
+    :param: `read_group_library`:
+    :param: `advanced_bwa_options`:
+    :param: `loglevel`:
+    :param: `reads_2`:
+    :param: `advanced_samtools_view_options`:
+    :param: `advanced_samtools_sort_options`:
+    :param: `advanced_samtools_markdups_options`:
+    :param: `advanced_samtools_flagstat_options`:
+    :returns: This will return an dx object with output generated. This is
+        actually taken care of by dxpy client libraries.
+    """
 
     # The following line(s) initialize your data object inputs on the platform
     # into dxpy.DXDataObject instances that you can start using immediately.
