@@ -81,6 +81,34 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
             logger.error("# of files for reads_1 and reads_2 does not match!")
             sys.exit(1)
 
+    # Set up execution environment
+
+    logger.setLevel(loglevel)
+    cpus = dx_resources.number_of_cpus(1.0)
+    max_ram = dx_resources.max_memory(0.85)
+    logger.info("# of CPUs:{0}\nMax RAM:{1}".format(cpus, max_ram))
+
+    temp_directories = [
+        "genome/",
+        "out/output_markdups_bams/",
+        "out/output_cram_file_archive/",
+        "out/download_quality_metrics/",
+        "tmp/alignment/",
+        "tmp/merged/",
+        "tmp/sorted/",
+        "tmp/markdup/"
+    ]
+
+    for temp_directory in temp_directories:
+        create_dir = dx_exec.execute_command("mkdir -p {0}".format(
+            temp_directory))
+        dx_exec.check_execution_syscode(create_dir, "Created: {0}".format(
+            temp_directory))
+        chmod_dir = dx_exec.execute_command("chmod 777 -R {0}".format(
+            temp_directory))
+        dx_exec.check_execution_syscode(chmod_dir, "Modified: {0}".format(
+            temp_directory))
+
     # The following line(s) initialize your data object inputs on the platform
     # into dxpy.DXDataObject instances that you can start using immediately.
 
