@@ -248,6 +248,14 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
     samtools_index = dx_exec.execute_command(samtools_index_cmd)
     dx_exec.check_execution_syscode(samtools_index, "Index BAM file")
 
+    # Clean up temporary BAM files - this will save space on HDDs (useful for WGS)
+
+    tmp_bam_directories = ["tmp/sorted/"]
+    for tmp_bam_directory in tmp_bam_directories:
+        clean_up_bam = dx_exec.execute_command("rm -rf {0}".format(
+            tmp_bam_directory))
+        dx_exec.check_execution_syscode(clean_up_bam, "Clean up BAM")
+
     # The following line(s) use the Python bindings to upload your file outputs
     # after you have created them on the local file system.  It assumes that you
     # have used the output field name for the filename for each output, but you
