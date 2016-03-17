@@ -172,7 +172,35 @@
   ],
   "runSpec": {
     "interpreter": "python2.7",
-    "file": "src/bwa_samtools.py"
+    "file": "src/bwa_samtools.py",
+    "distribution": "Ubuntu",
+    "release": "14.04",
+    "execDepends": [
+      {
+        "name": "dx_applet_utilities",
+        "package_manager": "git",
+        "url": "https://github.com/ViaGenetics/dx_applet_utilities.git",
+        "tag": "master",
+        "destdir": "~/"
+     }
+   ],
+   "systemRequirements":{
+     "main": {
+       "instanceType": "mem1_ssd1_x8"
+     }
+   },
+   "executionPolicy": {
+     "restartOn": {
+       "ExecutionError": 1,
+       "AppInternalError": 1
+     },
+     "maxRestarts": 2
+   },
+   "timeoutPolicy": {
+     "main": {
+       "hours": 22
+     }
+   }
   },
   "authorizedUsers": []
 }
