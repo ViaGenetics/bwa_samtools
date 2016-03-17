@@ -235,6 +235,19 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
             tmp_bam_directory))
         dx_exec.check_execution_syscode(clean_up_bam, "Clean up BAM")
 
+    # Mark duplicates in BAM file
+
+    markdup_bam = "out/output_markdups_bams/{0}.markdups.bam".format(read_group_sample)
+    samtools_markdup_cmd = "samtools rmdup {0} --reference {1} {2} {3}".format(
+        advanced_samtools_markdups_options, reference_filename,
+        sorted_bam, markdup_bam)
+    samtools_markdup = dx_exec.execute_command(samtools_markdup_cmd, debug=True)
+    dx_exec.check_execution_syscode(samtools_markdup, "Mark Duplicates")
+
+    samtools_index_cmd = "samtools index {0}".format(markdup_bam)
+    samtools_index = dx_exec.execute_command(samtools_index_cmd)
+    dx_exec.check_execution_syscode(samtools_index, "Index BAM file")
+
     # The following line(s) use the Python bindings to upload your file outputs
     # after you have created them on the local file system.  It assumes that you
     # have used the output field name for the filename for each output, but you
