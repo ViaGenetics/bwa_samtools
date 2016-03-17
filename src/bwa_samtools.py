@@ -274,6 +274,16 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
     samtools_cram = dx_exec.execute_command(samtools_cram_cmd)
     dx_exec.check_execution_syscode(samtools_cram, "Convert BAM to CRAM")
 
+    # Remove index files
+
+    rm_bai_files_cmd = "rm -rf out/output_markdups_bams/*bai"
+    rm_bai_files = dx_exec.execute_command(rm_bai_files_cmd)
+    dx_exec.check_execution_syscode(rm_bai_files, "Remove BAM index files")
+
+    rm_cai_files_cmd = "rm -rf out/output_cram_file_archive/*cai"
+    rm_cai_files = dx_exec.execute_command(rm_cai_files_cmd)
+    dx_exec.check_execution_syscode(rm_cai_files, "Remove CRAM index files")
+
     # The following line(s) use the Python bindings to upload your file outputs
     # after you have created them on the local file system.  It assumes that you
     # have used the output field name for the filename for each output, but you
