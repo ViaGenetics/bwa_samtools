@@ -186,7 +186,7 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
         read_group_library)
     bwa_mem_cmd = "bwa mem {0} -t {1} -R \"{2}\" {3}".format(
         advanced_bwa_options, cpus, read_group, reference_filename)
-    sambamba_view_cmd = "samtools view {0} -hb -@ {1} -T {2} /dev/stdin".format(
+    samtools_view_cmd = "samtools view {0} -hb -@ {1} -T {2} /dev/stdin".format(
         advanced_samtools_view_options, cpus, reference_filename)
     bam_files = []
 
