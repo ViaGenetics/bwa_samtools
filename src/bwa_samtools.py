@@ -59,6 +59,28 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
         actually taken care of by dxpy client libraries.
     """
 
+    # Set up string variables that are not required
+
+    if not advanced_bwa_options:
+        advanced_bwa_options = ""
+
+    if not advanced_samtools_view_options:
+        advanced_samtools_view_options = ""
+
+    if not advanced_samtools_sort_options:
+        advanced_samtools_sort_options = ""
+
+    if not advanced_samtools_markdups_options:
+        advanced_samtools_markdups_options = ""
+
+    if not advanced_samtools_flagstat_options:
+        advanced_samtools_flagstat_options = ""
+
+    if reads_2:
+        if len(reads_1) != len(reads_2):
+            logger.error("# of files for reads_1 and reads_2 does not match!")
+            sys.exit(1)
+
     # The following line(s) initialize your data object inputs on the platform
     # into dxpy.DXDataObject instances that you can start using immediately.
 
