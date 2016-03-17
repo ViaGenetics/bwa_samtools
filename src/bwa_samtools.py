@@ -35,7 +35,7 @@ except ImportError:
 @dxpy.entry_point('main')
 def main(reads_1, reference, reference_index, read_group_sample, loglevel,
     read_group_platform, read_group_platform_unit, read_group_library,
-    reads_2=None, advanced_bwa_options, advanced_samtools_view_options=None,
+    reads_2=None, advanced_bwa_options=None, advanced_samtools_view_options=None,
     advanced_samtools_sort_options=None, advanced_samtools_markdups_options=None,
     advanced_samtools_flagstat_options=None):
 
