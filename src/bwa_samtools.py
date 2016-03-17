@@ -207,6 +207,34 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
     clean_up_fastq = dx_exec.execute_command(clean_up_fastq_cmd)
     dx_exec.check_execution_syscode(clean_up_fastq, "FASTQ removed")
 
+    # Merge BAM files if more than one pair of reads exist
+
+    if len(bam_files) > 1:
+        merged_bam = merged_bam = "tmp/merged/{0}.merged.bam".format(
+            read_group_sample)
+        samtools_merge_cmd = "samtools merge -@ {0} {1} {2}".format(cpus,
+            merged_bam, " ".join(bam_files))
+        samtools_merge = dx_exec.execute_command(samtools_merge_cmd)
+        dx_exec.check_execution_syscode(samtools_merge, "Merge BAM")
+
+        # Make sure to reset the bam_files array, it will be used for the next
+        # set of processes
+        bam_files = [merged_bam]
+
+    sorted_bam = "tmp/sorted/sorted.{0}.bam".format(read_group_sample)
+    samtools_sort_merged_cmd = "samtools sort {0} -@ {1} -m {2}M {3} -o {4}".format(
+        advanced_samtools_sort_options, cpus, max_ram/cpus, bam_files[0], sorted_bam)
+    samtools_sort_merge = dx_exec.execute_command(samtools_sort_merged_cmd)
+    dx_exec.check_execution_syscode(samtools_sort_merge, "Sort merged BAM")
+
+    # Clean up temporary BAM files - this will save space on HDDs (useful for WGS)
+
+    tmp_bam_directories = ["tmp/alignment/", "tmp/merged/"]
+    for tmp_bam_directory in tmp_bam_directories:
+        clean_up_bam = dx_exec.execute_command("rm -rf {0}".format(
+            tmp_bam_directory))
+        dx_exec.check_execution_syscode(clean_up_bam, "Clean up BAM")
+
     # The following line(s) use the Python bindings to upload your file outputs
     # after you have created them on the local file system.  It assumes that you
     # have used the output field name for the filename for each output, but you
