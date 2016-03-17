@@ -13,7 +13,25 @@
 
 import os
 import dxpy
+import logging
+import time
 
+
+logger = logging.getLogger(__name__)
+logger.addHandler(dxpy.DXLogHandler())
+logger.propagate = False
+
+
+try:
+    from dx_applet_utilities import (
+        common_job_operations as dx_utils,
+        manage_command_execution as dx_exec,
+        prepare_job_resources as dx_resources)
+except ImportError:
+    logger.error("Make sure to add the dx_applet_utilities to execDepends in dxapp.json!")
+    sys.exit(1)
+
+    
 @dxpy.entry_point('main')
 def main(reads_1, reference, reference_index, read_group_sample, read_group_platform, read_group_platform_unit, read_group_library, advanced_bwa_options, loglevel, reads_2=None, advanced_samtools_view_options=None, advanced_samtools_sort_options=None, advanced_samtools_markdups_options=None, advanced_samtools_flagstat_options=None):
 
