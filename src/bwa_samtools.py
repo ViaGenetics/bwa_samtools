@@ -265,6 +265,15 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
     samtools_flagstat = dx_exec.execute_command(samtools_flagstat_cmd)
     dx_exec.check_execution_syscode(samtools_flagstat, "flagstat BAM file")
 
+    # Convert BAM file to CRAM file
+
+    cram_file = "out/output_cram_file_archive/{0}.cram".format(read_group_sample)
+    samtools_cram_cmd = "samtools view {0} -C -@ {1} -T {2} {3} -o {4}".format(
+        advanced_samtools_view_options, cpus, reference_filename,
+        markdup_bam, cram_file)
+    samtools_cram = dx_exec.execute_command(samtools_cram_cmd)
+    dx_exec.check_execution_syscode(samtools_cram, "Convert BAM to CRAM")
+
     # The following line(s) use the Python bindings to upload your file outputs
     # after you have created them on the local file system.  It assumes that you
     # have used the output field name for the filename for each output, but you
