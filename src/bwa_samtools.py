@@ -256,6 +256,15 @@ def main(reads_1, reference, reference_index, read_group_sample, loglevel,
             tmp_bam_directory))
         dx_exec.check_execution_syscode(clean_up_bam, "Clean up BAM")
 
+    # FlagStat BAM file - get some prelim alignment metrics
+
+    flagstat_output = "out/download_quality_metrics/{0}.stats.flagstat".format(
+        read_group_sample)
+    samtools_flagstat_cmd = 'samtools flagstat {0} {1} > {2}'.format(
+        advanced_samtools_flagstat_options, markdup_bam, flagstat_output)
+    samtools_flagstat = dx_exec.execute_command(samtools_flagstat_cmd)
+    dx_exec.check_execution_syscode(samtools_flagstat, "flagstat BAM file")
+
     # The following line(s) use the Python bindings to upload your file outputs
     # after you have created them on the local file system.  It assumes that you
     # have used the output field name for the filename for each output, but you
